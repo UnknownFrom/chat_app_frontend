@@ -8,7 +8,7 @@ $('button[id="button-enter"]').click(function (e) {
         password = $('input[name="password"]').val();
 
     $.ajax({
-        url: 'signin',
+        url: 'http://users.api.loc/signin',
         type: 'POST',
         dataType: 'json',
         data: {
@@ -60,7 +60,7 @@ $('button[id="button-reg"]').click(function (e) {
     //formData.append('avatar', avatar);
 
     $.ajax({
-        url: 'signup',
+        url: 'http://users.api.loc/signup',
         type: 'POST',
         dataType: 'json',
         processData: false,
