@@ -1,5 +1,4 @@
 <?php
-session_start();
 
 use pavel\users\Routes;
 
@@ -15,12 +14,6 @@ try {
             return;
         case 'users_auth':
             require_once './Templates/auth-template.html';
-            return;
-        case 'jquery_route':
-            require_once './assets/js/http_code.jquery.com_jquery-3.6.0.js';
-            return;
-        case 'main_js_route':
-            require_once './assets/js/main.js';
             return;
         case 'users_register_route':
             if (isset($_SESSION['user'])) {
