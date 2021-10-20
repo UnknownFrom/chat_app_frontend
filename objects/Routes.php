@@ -24,6 +24,7 @@ class Routes
             $users_register_route = new Route('/register');
             $users_profile_route = new Route('/profile');
             $users_logout_route = new Route('/logout');
+            $chat_route = new Route('/chat');
 
             self::$routeCollection = new RouteCollection();
             self::$routeCollection->add('choice_route', $choice_route);
@@ -31,6 +32,7 @@ class Routes
             self::$routeCollection->add('users_register_route', $users_register_route);
             self::$routeCollection->add('users_profile_route', $users_profile_route);
             self::$routeCollection->add('users_logout_route', $users_logout_route);
+            self::$routeCollection->add('chat_route', $chat_route);
 
             self::$context = new RequestContext();
             self::$context->fromRequest(Request::createFromGlobals());

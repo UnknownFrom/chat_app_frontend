@@ -27,6 +27,9 @@ try {
         case 'users_profile_route':
             require_once './Templates/profile-template.html';
             return;
+        case 'chat_route':
+            require_once './Templates/chat-template.html';
+            return;
         case 'users_logout_route':
             unset($_SESSION['user']);
             header('Location: ./auth');
