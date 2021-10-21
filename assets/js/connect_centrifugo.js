@@ -1,5 +1,5 @@
 var centrifuge = new Centrifuge({
-    url: 'http://localhost:8081/connection',
+    url: 'http://localhost:8086/connection',
     user: "<?php echo $_SESSION['user']; ?>",
     timestamp: "<?php echo $timestamp; ?>",
     token: "<?php echo $token; ?>"
