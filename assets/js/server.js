@@ -1,34 +1,39 @@
-'use strict';
+import ws from "ws";
+const {Server} = ws;
+import {v4 as uuid} from "uuid";
+import {writeFile, readFileSync, existsSync} from "fs";
+const clients = {};
+const log = existsSync('log') && readFileSync('log', 'utf-8');
+const messages = log ? JSON.parse(log) : [];
 
-const fs = require('fs');
-const http = require('http');
-const WebSocket = require('ws');
+const wss = new Server({port: 8000});
+wss.on("connection", (ws) => {
+    const id = uuid();
+    clients[id] = ws;
 
-const index = fs.readFileSync('../../Templates/chat-template.html', 'utf8');
+    console.log(`New client ${id}`);
+    ws.send(JSON.stringify(messages));
 
-const server = http.createServer((req, res) => {
-    res.writeHead(200);
-    res.end(index);
-});
-
-server.listen(8000, () => {
-    console.log('Listen port 8000');
-});
-
-const ws = new WebSocket.Server({ server });
-
-ws.on('connection', (connection, req) => {
-    const ip = req.socket.remoteAddress;
-    console.log(`Connected ${ip}`);
-    connection.on('message', (message) => {
-        console.log('Received: ' + message);
-        for (const client of ws.clients) {
-            if (client.readyState !== WebSocket.OPEN) continue;
-            if (client === connection) continue;
-            client.send(message, { binary: false });
+    ws.on('message', (rawMessage) => {
+        const {name, message} = JSON.parse(rawMessage);
+        messages.push({name, message});
+        for (const id in clients) {
+            clients[id].send(JSON.stringify([{name, message}]))
         }
-    });
-    connection.on('close', () => {
-        console.log(`Disconnected ${ip}`);
-    });
-});
+    })
+
+    ws.on('close', () => {
+        delete clients[id];
+        console.log(`Client is closed ${id}`)
+    })
+})
+
+process.on('SIGINT', () => {
+    wss.close();
+    writeFile('log', JSON.stringify(messages), err => {
+        if (err) {
+            console.log(err);
+        }
+        process.exit();
+    })
+})

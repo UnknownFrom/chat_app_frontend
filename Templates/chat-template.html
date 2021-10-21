@@ -1,12 +1,17 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
 <body>
-<h1>Chat</h1>
+<form id="messageForm">
+    <input type="text" name="name" id="name" />
+    <input type="text" name="message" id="message" />
+    <input type="submit" value="send" />
+</form>
+
 <div id="chat"></div>
-<input id="msg" type="text">
-<style>
-    input { border: 1px solid green; }
-</style>
-<script src="../assets/js/chat.js"></script>
+<script type="module" src="../assets/js/chat.js"></script>
 </body>
 </html>

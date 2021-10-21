@@ -1,33 +1,21 @@
-const CHAR_RETURN = 13;
-
-const socket = new WebSocket('ws://127.0.0.1:8000/chat');
-const chat = document.getElementById('chat');
-const msg = document.getElementById('msg');
-msg.focus();
-
-const writeLine = (text) => {
-    const line = document.createElement('div');
-    line.innerHTML = `<p>${text}</p>`;
-    chat.appendChild(line);
-};
-
-socket.addEventListener('open', () => {
-    writeLine('connected');
-});
-
-socket.addEventListener('close', () => {
-    writeLine('closed');
-});
-
-socket.addEventListener('message', ({ data }) => {
-    writeLine(data);
-});
-
-msg.addEventListener('keydown', (event) => {
-    if (event.keyCode === CHAR_RETURN) {
-        const s = msg.value;
-        msg.value = '';
-        writeLine(s);
-        socket.send(s);
-    }
-});
+const chatEl = document.getElementById("chat");
+const ws = new WebSocket("ws://127.0.0.1:8000");
+ws.onmessage = (message) => {
+    const messages = JSON.parse(message.data);
+    messages.forEach((val) => {
+        const messageEl = document.createElement('div');
+        messageEl.appendChild(document.createTextNode(`${val.name}: ${val.message}`));
+        chat.appendChild(messageEl);
+    })
+}
+const send = (event) => {
+    event.preventDefault();
+    const name = document.getElementById("name").value;
+    const message = document.getElementById("message").value;
+    ws.send(JSON.stringify({
+        name, message
+    }))
+    return false;
+}
+const formEl = document.getElementById("messageForm");
+formEl.addEventListener("submit", send);
