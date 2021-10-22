@@ -17,7 +17,7 @@ $('button[id="button-enter"]').click(function (e) {
         },
         success(data) {
             if (data.status) {
-                document.location.href = 'chat';
+                document.location.href = 'chat' + '?token=' + data.token;
             } else {
                 if (data.type === 1) {
                     data.fields.forEach(function (field) {

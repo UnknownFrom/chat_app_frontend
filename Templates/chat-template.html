@@ -1,18 +1,46 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Чат</title>
     <link rel="stylesheet" href="../assets/css/chat.css">
+    <script src="../assets/js/http_code.jquery.com_jquery-3.6.0.js"></script>
+    <script type="module" src="../assets/js/index.js"></script>
 </head>
 <body>
-<form id="messageForm">
+<div class='chat'>
+    <div class='chat-messages' id="chat">
+        <div class='chat-messages__content' id='messages'>
+        </div>
+    </div>
+    <div class='chat-input'>
+        <form method='post' id='chat-form'>
+            <input type='text' name="message" id='message-text' class='chat-form__input' placeholder='Введите сообщение'> <input type='submit' class='chat-form__submit' value='👌'>
+        </form>
+    </div>
+</div>
+<!--<form id="messageForm">
     <input type="text" name="name" id="name" />
     <input type="text" name="message" id="message" />
     <input type="submit" value="send" />
 </form>
 
-<div id="chat"></div>
-<script type="module" src="../assets/js/chat.js"></script>
+<div id="chat"></div>-->
+
+
 </body>
 </html>
+
+<!--<script type="text/javascript" src="http:/chat.api.loc/index.js">
+    $.ajax({
+        url: "http:/chat.api.loc/index.js",
+        type: "POST",
+        dataType: "JSON",
+        data:{
+            name: $('input[id="name"]'),
+            message: $('input[id="message"]')
+        }
+
+    });
+</script>-->
