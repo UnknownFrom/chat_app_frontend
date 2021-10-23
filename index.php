@@ -28,9 +28,6 @@ try {
             require_once './Templates/profile-template.html';
             return;
         case 'chat_route':
-            echo '<script src="./assets/js/http_code.jquery.com_jquery-3.6.0.js"></script>';
-            echo '<script src="./assets/js/index.js"></script>';
-
             require_once './Templates/chat-template.html';
             return;
         case 'users_logout_route':

@@ -5,6 +5,7 @@
 }
 
 body{
+    background-color: rgba(22, 24, 25, 0.95);
     height: 100vh;
     display: flex;
     align-items: center;
@@ -27,64 +28,82 @@ p{
 }
 
 .msg{
-    padding: 20px;
-    border: 3px solid #492b9a;
+    padding: 15px;
+    border: 3px solid #FA751D;
     border-radius: 25px;
     text-align: center;
     font-weight: bold;
 }
 
 form{
+    background-color: rgb(245, 239, 239);
     display: flex;
     flex-direction: column;
     width: 375px;
-    color: #9400f6;
+    color: #d95a0f;
     padding: 20px;
-    border: 3px solid #492b9a;
+    border: 3px solid #FA751D;
     border-radius: 25px;
+    box-shadow: 0 0 10px 6px #FA751D;
+}
+
+input:hover{
+    box-shadow: 0 0 15px 3px #97b399;
+    border: 2px solid #97b399;
+}
+
+input:focus
+{
+    box-shadow: 0 0 15px 3px #cee09e;
+    border: 2px solid #cee09e;
+    outline: none;
 }
 
 input{
     margin: 10px 0;
     padding: 10px;
-    border: unset;
-    border-bottom: 2px solid #9400f6;
-    outline: none;
-    color: #9400f6;
+    border: 2px solid #FA751D;
+    color: #FA751D;
+    border-radius: 30px;
+}
+
+button:hover{
+    background-color: #97b399;
+    box-shadow: 0 0 15px 5px #97b399;
+}
+
+button:active{
+    background-color: #cee09e;
+    box-shadow: 0 0 15px 5px #cee09e;
 }
 
 button{
+    font-size: 17px;
     margin: 5px;
     inline-size: 200px;
     align-self: center;
     padding: 10px;
-    background: rgba(167, 67, 250, 0.82);
+    background: #FA751D;
     border: unset;
     cursor: pointer;
-    border-radius: 40px;
+    border-radius: 20px;
 }
 
 .logout{
     margin: 5px 0;
     font-size: 15px;
     text-align: center;
-    color: #9400f6;
+    color: #FA751D;
 }
 
 .fr{
-
-    padding: 20px;
-    border: 3px solid #492b9a;
-    border-radius: 25px;
-    display: flex;
+    width: auto;
     flex-direction: row;
-    width: 400px;
-    color: #9400f6;
 }
 
 .star{
-    font-size: 20px;
-    color: #8f1517;
+    font-size: 23px;
+    color: #be1015;
 }
 
 .none{
@@ -92,5 +111,5 @@ button{
 }
 
 .error{
-    border-bottom: 2px solid #8f1517;
+    border: 2px solid #d50c10;
 }
