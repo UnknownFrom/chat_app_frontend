@@ -1,6 +1,6 @@
 const searchString = new URLSearchParams(window.location.search);
-let name = '';
-
+let name;
+let status;
 const chatEl = document.getElementById("chat");
 const ws = new WebSocket("ws://127.0.0.1:8000");
 
@@ -19,7 +19,7 @@ ws.onopen = () => {
             }
             const mes = " подключился к чату";
             name = data.fullName;
-            const status = 'online';
+            status = 'online';
             ws.send(JSON.stringify({
                 name, mes, status
             }))
@@ -39,11 +39,12 @@ ws.onmessage = (message) => {
     const messages = JSON.parse(message.data);
     console.log(messages['name']);
     const messageEl = document.createElement('div');
-    if(messages.name) {
+    messageEl.appendChild(document.createTextNode(`${messages.name}: ${messages.mess}`));
+    /*if(messages.name) {
         messageEl.appendChild(document.createTextNode(`${messages.name}: ${messages.mess}`));
     }else{
         messageEl.appendChild(document.createTextNode(`${messages.mess}`));
-    }
+    }*/
     chatEl.appendChild(messageEl);
     chatEl.scrollTo(0, chatEl.scrollHeight);
 
@@ -68,13 +69,31 @@ const send = (event) => {
         return false;
     }
     ws.send(JSON.stringify({
-        name, mes
+        name, mes, status
     }))
 }
+
+
+
 const formEl = document.getElementById("chat-form");
 formEl.addEventListener("submit", send);
 
-ws.onclose = () => {
+const logoutEl = document.getElementById("listUsers");
+logoutEl.addEventListener("submit", logout);
+
+function logout(event){
+    event.preventDefault();
+    status = "offline";
+    const mes = "отключается от чата";
+    ws.send(JSON.stringify({
+        name, mes, status
+    }))
+    //ws.close();
+    window.location.href = "/";
+    return false;
+}
+
+/*ws.onclose = () => {
     console.log("Вышел");
     const mes = " отключился от чата";
     const status = 'offline';
@@ -82,7 +101,16 @@ ws.onclose = () => {
     ws.send(JSON.stringify({
         name, mes, status
     }))
-}
+}*/
+
+ws.onclose = function(event) {
+    console.log("Вышел");
+    const mes = " отключился от чата";
+    const status = 'offline';
+    //ws.close(1000, `${name} отключился от чата`);
+    ws.send(JSON.stringify({
+        name, mes, status
+    }))};
 
 function removeUsers(){
     const usersListEl = document.getElementById("users")
