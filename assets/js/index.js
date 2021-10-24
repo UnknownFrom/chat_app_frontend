@@ -1,22 +1,9 @@
 const searchString = new URLSearchParams(window.location.search);
-let name;
-let _event;
-let id;
-let status;
+let name, _event, id, status;
 const chatEl = document.getElementById("chat");
 const ws = new WebSocket("ws://127.0.0.1:8000");
 
 ws.onopen = () => {
-    /*let response = await fetch("http://users.api.loc/token",{
-        mode: 'no-cors',
-        method: "POST",
-        headers: {
-            'Content-Type': 'application/json;charset=utf-8'
-        },
-        body: JSON.stringify({token: searchString.get('token')})
-    });
-    let json = await response.json();
-    console.log(json);*/
     $.ajax({
         url: "http://users.api.loc/token",
         type: "POST",
@@ -36,10 +23,10 @@ ws.onopen = () => {
             ws.send(JSON.stringify({
                 id, name, message, status, _event
             }))
-            /*const usersListEl = document.getElementById("users")
+            const usersListEl = document.getElementById("users")
             const userEl = document.createElement('div');
             userEl.appendChild(document.createTextNode(`Вы: ${name}`));
-            usersListEl.appendChild(userEl);*/
+            usersListEl.appendChild(userEl);
         },
         error: function () {
             document.location.href = '/auth'
@@ -61,40 +48,36 @@ ws.onmessage = (message) => {
         switch (message.event)
         {
             case 'add_user':
-                //console.log("34g3");
                 printUsers(message.usersList);
+                messageEl = document.createElement('div');
+                messageEl.appendChild(document.createTextNode(`${message.fullName} ${message.message}`));
+                messageEl.style.textAlign = 'center';
+                messageEl.style.marginBottom = '5px';
+                chatEl.appendChild(messageEl);
+                chatEl.scrollTo(0, chatEl.scrollHeight);
                 break;
             case 'disconnect':
                 printUsers(message.usersList);
                 messageEl = document.createElement('div');
-                messageEl.appendChild(document.createTextNode(`${message.fullName}: ${message.message}`));
+                messageEl.appendChild(document.createTextNode(`${message.fullName} ${message.message}`));
+                messageEl.style.textAlign = 'center';
+                messageEl.style.marginBottom = '5px';
                 chatEl.appendChild(messageEl);
                 chatEl.scrollTo(0, chatEl.scrollHeight);
                 break;
             case 'send_message':
                 messageEl = document.createElement('div');
                 messageEl.appendChild(document.createTextNode(`${message.fullName}: ${message.message}`));
+                if(name === message.fullName)
+                {
+                    messageEl.style.textAlign = "right"
+                }
                 chatEl.appendChild(messageEl);
                 chatEl.scrollTo(0, chatEl.scrollHeight);
                 break;
         }
     }
-    /*console.log(messages);
-    for(const val of messages)
-    {
-        const messageEl = document.createElement('div');
-        messageEl.appendChild(document.createTextNode(`${val.fullName}: ${val.message}`));
-        chatEl.appendChild(messageEl);
-        chatEl.scrollTo(0, chatEl.scrollHeight);
-    }*/
-
-    //removeUsers();
-/*    const json = JSON.parse(messages.usersList)
-    console.log(json);*/
-    //printUsers(messages[0].usersList)
 }
-
-
 
 window.onunload = function(){
     status = "offline";
@@ -127,13 +110,6 @@ logoutEl.addEventListener("submit", logout);
 
 function logout(event) {
     event.preventDefault();
-    /*status = "offline";
-    _event = 'disconnect';
-    const message = "отключается от чата";
-    ws.send(JSON.stringify({
-        id, name, message, status, _event
-    }))*/
-    //ws.close();
     window.location.href = "/";
     return false;
 }
@@ -144,6 +120,7 @@ function removeUsers() {
         usersListEl.removeChild(usersListEl.firstChild);
     }
 }
+
 function reviver(key, value) {
     if(typeof value === 'object' && value !== null) {
         if (value.dataType === 'Map') {
@@ -156,12 +133,16 @@ function reviver(key, value) {
 function printUsers(data)
 {
     removeUsers();
-    //console.log(data);
     for(const val of data)
     {
         const usersListEl = document.getElementById("users")
         const userEl = document.createElement('div');
-        userEl.appendChild(document.createTextNode(val[1]));
+        userEl.style.marginBottom = '5px';
+        if(val[1] === name)
+        {
+            userEl.style.fontWeight = 'bold';
+        }
+        userEl.appendChild(document.createTextNode('●' + val[1]));
         usersListEl.appendChild(userEl);
     }
 }

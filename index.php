@@ -28,8 +28,14 @@ try {
             require_once './Templates/profile-template.html';
             return;
         case 'chat_route':
-            require_once './Templates/chat-template.html';
-            return;
+            try {
+                //$decoded = JWT::decode($_GET['token'], $_ENV['EMAIL_KEY'], array('HS256'));
+                require_once './Templates/chat-template.html';
+                return;
+            } catch (Exception $e)
+            {
+                header('Location: /');
+            }
         case 'users_logout_route':
             unset($_SESSION['user']);
             header('Location: ./auth');
