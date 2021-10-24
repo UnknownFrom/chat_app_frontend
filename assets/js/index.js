@@ -16,7 +16,7 @@ ws.onopen = () => {
                 document.location.href = '/auth';
             }
             const message = " подключился к чату";
-            name = data.fullName;
+            name = data.login;
             id = data.id;
             status = 'online';
             _event = 'add_user';
