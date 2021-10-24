@@ -52,6 +52,15 @@ ws.onmessage = (message) => {
     })
 }
 
+window.onunload = function(){
+    status = "offline";
+    const mes = "отключается от чата";
+    ws.send(JSON.stringify({
+        name, mes, status
+    }))
+    ws.close();
+};
+
 const send = (event) => {
     event.preventDefault();
     const mes = document.getElementById("message-text").value;
@@ -81,16 +90,6 @@ function logout(event) {
     window.location.href = "/";
     return false;
 }
-
-ws.onclose = function (event) {
-    console.log("Вышел");
-    const mes = " отключился от чата";
-    const status = 'offline';
-    //ws.close(1000, `${name} отключился от чата`);
-    ws.send(JSON.stringify({
-        name, mes, status
-    }))
-};
 
 function removeUsers() {
     const usersListEl = document.getElementById("users")
