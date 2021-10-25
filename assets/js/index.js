@@ -35,18 +35,13 @@ ws.onopen = () => {
 }
 
 ws.onmessage = (message) => {
-    //console.log(message);
     const messages = JSON.parse(message.data, reviver);
-    //console.log(messages);
     let messageEl;
-    for(const message of messages){
-        if(!message.event)
-        {
+    for (const message of messages) {
+        if (!message.event) {
             message.event = "send_message";
         }
-        console.log(message);
-        switch (message.event)
-        {
+        switch (message.event) {
             case 'add_user':
                 printUsers(message.usersList);
                 messageEl = document.createElement('div');
@@ -68,8 +63,7 @@ ws.onmessage = (message) => {
             case 'send_message':
                 messageEl = document.createElement('div');
                 messageEl.appendChild(document.createTextNode(`${message.fullName}: ${message.message}`));
-                if(name === message.fullName)
-                {
+                if (name === message.fullName) {
                     messageEl.style.textAlign = "right"
                 }
                 chatEl.appendChild(messageEl);
@@ -79,7 +73,7 @@ ws.onmessage = (message) => {
     }
 }
 
-window.onunload = function(){
+window.onunload = function () {
     status = "offline";
     _event = "disconnect";
     const message = "отключается от чата";
@@ -122,7 +116,7 @@ function removeUsers() {
 }
 
 function reviver(key, value) {
-    if(typeof value === 'object' && value !== null) {
+    if (typeof value === 'object' && value !== null) {
         if (value.dataType === 'Map') {
             return new Map(value.value);
         }
@@ -130,16 +124,13 @@ function reviver(key, value) {
     return value;
 }
 
-function printUsers(data)
-{
+function printUsers(data) {
     removeUsers();
-    for(const val of data)
-    {
+    for (const val of data) {
         const usersListEl = document.getElementById("users")
         const userEl = document.createElement('div');
         userEl.style.marginBottom = '5px';
-        if(val[1] === name)
-        {
+        if (val[1] === name) {
             userEl.style.fontWeight = 'bold';
         }
         userEl.appendChild(document.createTextNode('●' + val[1]));
