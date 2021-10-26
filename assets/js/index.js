@@ -1,43 +1,14 @@
-const searchString = new URLSearchParams(window.location.search);
 let name, _event, id, status;
-//localStorage.getItem('token');
 const chatEl = document.getElementById("chat");
 const ws = new WebSocket("ws://127.0.0.1:8000");
 
 ws.onopen = () => {
     ws.send(JSON.stringify({token: localStorage.getItem('token'), _event: 'check_token'}))
-    /*$.ajax({
-        url: "http://users.api.loc/token",
-        type: "POST",
-        dataType: "JSON",
-        data: {
-            token: localStorage.getItem('token')//searchString.get('token')
-        },
-        success(data) {
-            if (!data.status) {
-                document.location.href = '/auth';
-            }
-            const message = " подключился к чату";
-            name = data.login;
-            id = data.id;
-            status = 'online';
-            _event = 'add_user';
-            ws.send(JSON.stringify({
-                id, name, message, status, _event
-            }))
-            const usersListEl = document.getElementById("users")
-            const userEl = document.createElement('div');
-            userEl.appendChild(document.createTextNode(`Вы: ${name}`));
-            usersListEl.appendChild(userEl);
-        },
-        error: function () {
-            document.location.href = '/auth'
-        }
-    });*/
 }
 
 ws.onmessage = (message) => {
     const messages = JSON.parse(message.data, reviver);
+    console.log(messages);
     let messageEl;
     for (const message of messages) {
         if (!message.event) {
@@ -45,6 +16,8 @@ ws.onmessage = (message) => {
         }
         switch (message.event) {
             case 'add_user':
+                id = message.id;
+                name = message.fullName;
                 printUsers(message.usersList);
                 messageEl = document.createElement('div');
                 messageEl.appendChild(document.createTextNode(`${message.fullName} ${message.message}`));
@@ -80,7 +53,7 @@ window.onunload = function () {
     _event = "disconnect";
     const message = "отключается от чата";
     ws.send(JSON.stringify({
-        id, name, message, status, _event
+        id, message, _event
     }))
     ws.close();
 };
@@ -93,8 +66,9 @@ const send = (event) => {
     if (message === '' || name === '') {
         return false;
     }
+    console.log(message);
     ws.send(JSON.stringify({
-        id, name, message, status, _event
+        id, message, _event
     }))
 }
 
