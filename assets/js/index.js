@@ -5,8 +5,8 @@ const chatEl = document.getElementById("chat");
 const ws = new WebSocket("ws://127.0.0.1:8000");
 
 ws.onopen = () => {
-    //ws.send(JSON.stringify({token: localStorage.getItem('token'), _event: 'check_token'}))
-    $.ajax({
+    ws.send(JSON.stringify({token: localStorage.getItem('token'), _event: 'check_token'}))
+    /*$.ajax({
         url: "http://users.api.loc/token",
         type: "POST",
         dataType: "JSON",
@@ -33,7 +33,7 @@ ws.onopen = () => {
         error: function () {
             document.location.href = '/auth'
         }
-    });
+    });*/
 }
 
 ws.onmessage = (message) => {
