@@ -1,15 +1,17 @@
 const searchString = new URLSearchParams(window.location.search);
 let name, _event, id, status;
+//localStorage.getItem('token');
 const chatEl = document.getElementById("chat");
 const ws = new WebSocket("ws://127.0.0.1:8000");
 
 ws.onopen = () => {
+    //ws.send(JSON.stringify({token: localStorage.getItem('token'), _event: 'check_token'}))
     $.ajax({
         url: "http://users.api.loc/token",
         type: "POST",
         dataType: "JSON",
         data: {
-            token: searchString.get('token')
+            token: localStorage.getItem('token')//searchString.get('token')
         },
         success(data) {
             if (!data.status) {
