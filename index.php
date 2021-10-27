@@ -13,15 +13,9 @@ try {
             require_once './Templates/index-template.html';
             return;
         case 'users_auth':
-            if (isset($_SESSION['user'])) {
-                header('Location: ./profile');
-            }
             require_once './Templates/auth-template.html';
             return;
         case 'users_register_route':
-            if (isset($_SESSION['user'])) {
-                header('Location: ./profile');
-            }
             require_once './Templates/register-template.html';
             return;
         case 'users_profile_route':

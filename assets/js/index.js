@@ -3,6 +3,11 @@ const chatEl = document.getElementById("chat");
 const ws = new WebSocket("ws://127.0.0.1:8000");
 
 ws.onopen = () => {
+    if (!localStorage.getItem('token')) {
+        ws.close();
+        document.location.href = 'http://chat.loc/'
+        return;
+    }
     ws.send(JSON.stringify({token: localStorage.getItem('token'), _event: 'check_token'}))
 }
 
@@ -27,6 +32,8 @@ ws.onmessage = (message) => {
                 chatEl.scrollTo(0, chatEl.scrollHeight);
                 break;
             case 'disconnect':
+                ws.send(JSON.stringify({token: localStorage.getItem('token'), _event: 'check_token'}))
+                //window.localStorage.clear();
                 printUsers(message.usersList);
                 messageEl = document.createElement('div');
                 messageEl.appendChild(document.createTextNode(`${message.fullName} ${message.message}`));
@@ -48,7 +55,7 @@ ws.onmessage = (message) => {
     }
 }
 
-window.onunload = function () {
+window.onbeforeunload = function () {
     status = "offline";
     _event = "disconnect";
     const message = "отключается от чата";
@@ -80,8 +87,20 @@ logoutEl.addEventListener("submit", logout);
 
 function logout(event) {
     event.preventDefault();
-    window.location.href = "/";
-    return false;
+    status = "offline";
+    _event = "disconnect";
+    const message = "отключается от чата";
+    ws.send(JSON.stringify({
+        id, message, _event
+    }))
+    //console.log(window.localStorage.getItem('token'));
+    //console.log(window.localStorage.getItem('token'));
+    //localStorage.removeItem('token');
+    ws.close();
+    localStorage.removeItem('token');
+    window.location.href = "http://chat.loc/";
+
+    return true;
 }
 
 function removeUsers() {

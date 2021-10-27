@@ -1,3 +1,8 @@
+if(localStorage.getItem('token'))
+{
+    document.location.href = 'chat';
+}
+
 $('button[id="button-enter"]').click(function (e) {
 
     e.preventDefault();
@@ -17,7 +22,7 @@ $('button[id="button-enter"]').click(function (e) {
         },
         success(data) {
             if (data.status) {
-                localStorage.setItem('token', data.token);
+                window.localStorage.setItem('token', data.token);
                 console.log(data.token);
                 document.location.href = 'chat';// + '?token=' + data.token;
             } else {
