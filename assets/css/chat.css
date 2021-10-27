@@ -40,33 +40,13 @@ body{
 .chat-messages {
     min-height:93%;
     max-height:93%;
-    overflow:auto;
+    max-width: 100%;
+    overflow-y: scroll;
+    word-wrap: break-word;
 }
 
 .chat-messages__content {
     padding:1px;
-}
-
-.chat__message {
-    border-left:3px solid #333;
-    margin-top:2px;
-    padding:2px;
-}
-
-.chat__message_black {
-    border-color:#000;
-}
-
-.chat__message_blue {
-    border-color:blue;
-}
-
-.chat__message_green {
-    border-color:green;
-}
-
-.chat__message_red {
-    border-color:red;
 }
 
 .chat-input {
@@ -110,4 +90,35 @@ input{
     bottom: 3%;
     left: 10%;
     width: 80%;
+}
+
+.message_block{
+    margin-top:5px;
+    padding:2px;
+}
+
+.message_block_self{
+    border-right:3px solid;
+}
+
+.message_block_another{
+    border-left:3px solid;
+}
+.message_self{
+    text-align: right;
+}
+.message_another{
+    text-align: left;
+}
+.message_time{
+    margin-top: 5px;
+    font-size: 16px;
+}
+
+.message_color_self {
+    border-color: #2c4750;
+}
+
+.message_color_another {
+    border-color: #aad99f;
 }
