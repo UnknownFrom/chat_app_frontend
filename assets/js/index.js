@@ -1,4 +1,4 @@
-let name, _event, id, status;
+let name, _event, id, limit = 20, _offset = 0;
 const chatEl = document.getElementById('chat');
 const ws = new WebSocket('ws://127.0.0.1:8000');
 
@@ -8,16 +8,18 @@ ws.onopen = () => {
         document.location.href = 'http://chat.loc/'
         return;
     }
-    ws.send(JSON.stringify({token: localStorage.getItem('token'), _event: 'check_token'}))
+    ws.send(JSON.stringify({token: localStorage.getItem('token'), limit, _offset, _event: 'check_token'}))
 }
 
 ws.onmessage = (message) => {
     const messages = JSON.parse(message.data, reviver);
-    for (const message of messages) {
-        if (!message.event) {
-            message.event = 'send_message';
-        }
-        switch (message.event) {
+    console.log(messages);
+    if(messages.event === 'send_page')
+    {
+        sendPage(messages.data);
+    }
+    for (const message of messages.data) {
+        switch (messages.event) {
             case 'add_user':
                 /* записываем данные текущего пользователя */
                 id = message.id;
@@ -35,12 +37,57 @@ ws.onmessage = (message) => {
             case 'send_message':
                 sendMessage(message);
                 break;
+
         }
     }
 }
 
-function sendMessage(message)
-{
+window.onbeforeunload = function () {
+    status = 'offline';
+    _event = 'disconnect';
+    const message = 'отключается от чата';
+    ws.send(JSON.stringify({
+        id, message, _event
+    }))
+    ws.close();
+};
+
+const formEl = document.getElementById('chat-form');
+formEl.addEventListener('submit', send);
+
+const logoutEl = document.getElementById('listUsers');
+logoutEl.addEventListener('submit', logout);
+
+chatEl.addEventListener('scroll', function () {
+    if (chatEl.scrollTop === 0) {
+
+        //let top = chatEl.scrollTop;
+        //let height = chatEl.scrollHeight;
+        _offset++;
+        _event = 'send_page';
+        ws.send(JSON.stringify({limit, _offset, _event}))
+        //chatEl.scrollTo(0, top + (chatEl.scrollHeight - height));
+    }
+})
+
+function sendPage(messages) {
+    for (const massage of messages) {
+        addMessageToBegin(massage);
+    }
+}
+
+function addMessageToBegin(message) {
+    const messageBlock = createMessageBlock(message);
+    chatEl.insertBefore(messageBlock, chatEl.firstChild);
+}
+
+function sendMessage(message) {
+    const messageBlock = createMessageBlock(message);
+    chatEl.appendChild(messageBlock);
+    chatEl.scrollTo(0, chatEl.scrollHeight);
+}
+
+function createMessageBlock(message){
     const timeEl = document.createElement('div');
     timeEl.appendChild(document.createTextNode(`${message.time}`));
     timeEl.classList.add('message_time');
@@ -54,26 +101,12 @@ function sendMessage(message)
     messageBlock.appendChild(messageEl);
     if (name === message.fullName) {
         messageBlock.classList.add('message_self', 'message_color_self', 'message_block_self');
-    }
-    else{
+    } else {
         messageBlock.classList.add('message_another', 'message_color_another', 'message_block_another');
     }
-    chatEl.appendChild(messageBlock);
-    chatEl.scrollTo(0, chatEl.scrollHeight);
+    return messageBlock;
 }
-
-
-window.onbeforeunload = function () {
-    status = 'offline';
-    _event = 'disconnect';
-    const message = 'отключается от чата';
-    ws.send(JSON.stringify({
-        id, message, _event
-    }))
-    ws.close();
-};
-
-const send = (event) => {
+function send(event){
     event.preventDefault();
     _event = 'send_message';
     const message = document.getElementById('message-text').value;
@@ -87,12 +120,6 @@ const send = (event) => {
     }))
 }
 
-const formEl = document.getElementById('chat-form');
-formEl.addEventListener('submit', send);
-
-const logoutEl = document.getElementById('listUsers');
-logoutEl.addEventListener('submit', logout);
-
 function logout(event) {
     event.preventDefault();
     status = 'offline';
@@ -101,18 +128,13 @@ function logout(event) {
     ws.send(JSON.stringify({
         id, message, _event
     }))
-    //console.log(window.localStorage.getItem('token'));
-    //console.log(window.localStorage.getItem('token'));
-    //localStorage.removeItem('token');
     ws.close();
     localStorage.removeItem('token');
     window.location.href = 'http://chat.loc/';
-
     return true;
 }
 
-function printInfoMessage(message)
-{
+function printInfoMessage(message) {
     const messageEl = document.createElement('div');
     messageEl.appendChild(document.createTextNode(`${message.fullName} ${message.message}`));
     messageEl.style.textAlign = 'center';
@@ -128,15 +150,6 @@ function removeUsers() {
     }
 }
 
-function reviver(key, value) {
-    if (typeof value === 'object' && value !== null) {
-        if (value.dataType === 'Map') {
-            return new Map(value.value);
-        }
-    }
-    return value;
-}
-
 function printUsers(data) {
     removeUsers();
     for (const val of data) {
@@ -149,4 +162,13 @@ function printUsers(data) {
         userEl.appendChild(document.createTextNode('●' + val[1]));
         usersListEl.appendChild(userEl);
     }
+}
+
+function reviver(key, value) {
+    if (typeof value === 'object' && value !== null) {
+        if (value.dataType === 'Map') {
+            return new Map(value.value);
+        }
+    }
+    return value;
 }
