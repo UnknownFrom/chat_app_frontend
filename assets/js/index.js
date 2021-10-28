@@ -33,7 +33,7 @@ ws.onmessage = (message) => {
                 name = message.fullName;
                 _event = 'add_user';
                 ws.send(JSON.stringify({
-                    id, message, _event
+                    id, _event
                 }))
                 break;
             case 'disconnect':
