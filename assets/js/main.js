@@ -23,8 +23,7 @@ $('button[id="button-enter"]').click(function (e) {
         success(data) {
             if (data.status) {
                 window.localStorage.setItem('token', data.token);
-                console.log(data.token);
-                document.location.href = 'chat';// + '?token=' + data.token;
+                document.location.href = 'chat';
             } else {
                 if (data.type === 1) {
                     data.fields.forEach(function (field) {

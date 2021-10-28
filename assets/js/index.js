@@ -21,12 +21,20 @@ ws.onmessage = (message) => {
     for (const message of messages.data) {
         switch (messages.event) {
             case 'add_user':
+                /* вывод активных пользователей и сообщения о входе */
+                printInfoMessage(message)
+                printUsers(message.usersList);
+                _event = 'send_page';
+                ws.send(JSON.stringify({limit, _offset, _event}))
+                break;
+            case 'confirm_user':
                 /* записываем данные текущего пользователя */
                 id = message.id;
                 name = message.fullName;
-                /* вывод активных пользователей и сообщения о входе */
-                printUsers(message.usersList);
-                printInfoMessage(message)
+                _event = 'add_user';
+                ws.send(JSON.stringify({
+                    id, message, _event
+                }))
                 break;
             case 'disconnect':
                 /* закрытие соединения для дублированных вкладок */
@@ -37,18 +45,17 @@ ws.onmessage = (message) => {
             case 'send_message':
                 sendMessage(message);
                 break;
-
         }
     }
 }
 
 window.onbeforeunload = function () {
-    status = 'offline';
+    /*status = 'offline';
     _event = 'disconnect';
     const message = 'отключается от чата';
     ws.send(JSON.stringify({
         id, message, _event
-    }))
+    }))*/
     ws.close();
 };
 
@@ -58,18 +65,16 @@ formEl.addEventListener('submit', send);
 const logoutEl = document.getElementById('listUsers');
 logoutEl.addEventListener('submit', logout);
 
+/* обработка скролла */
 chatEl.addEventListener('scroll', function () {
     if (chatEl.scrollTop === 0) {
-
-        //let top = chatEl.scrollTop;
-        //let height = chatEl.scrollHeight;
         _offset++;
         _event = 'send_page';
         ws.send(JSON.stringify({limit, _offset, _event}))
-        //chatEl.scrollTo(0, top + (chatEl.scrollHeight - height));
     }
 })
 
+/* вывод новой страницы сообщений */
 function sendPage(messages) {
     for (const massage of messages) {
         addMessageToBegin(massage);
@@ -88,24 +93,28 @@ function sendMessage(message) {
 }
 
 function createMessageBlock(message){
+    /* время сообщения */
     const timeEl = document.createElement('div');
     timeEl.appendChild(document.createTextNode(`${message.time}`));
     timeEl.classList.add('message_time');
-
+    /* текст сообщения */
     const messageEl = document.createElement('div');
+    messageEl.classList.add('message_text');
     messageEl.appendChild(document.createTextNode(`${message.fullName}: ${message.message}`));
-
+    /* весь блок сообщения */
     const messageBlock = document.createElement('div');
     messageBlock.classList.add('message_block');
     messageBlock.appendChild(timeEl);
     messageBlock.appendChild(messageEl);
+    /* чъё сообщение */
     if (name === message.fullName) {
-        messageBlock.classList.add('message_self', 'message_color_self', 'message_block_self');
+        messageBlock.classList.add('message_block_self');
     } else {
-        messageBlock.classList.add('message_another', 'message_color_another', 'message_block_another');
+        messageBlock.classList.add('message_block_another');
     }
     return messageBlock;
 }
+
 function send(event){
     event.preventDefault();
     _event = 'send_message';
@@ -114,7 +123,6 @@ function send(event){
     if (message === '' || name === '') {
         return false;
     }
-    console.log(message);
     ws.send(JSON.stringify({
         id, message, _event
     }))
@@ -135,7 +143,12 @@ function logout(event) {
 }
 
 function printInfoMessage(message) {
+    if(name === message.fullName)
+    {
+        return;
+    }
     const messageEl = document.createElement('div');
+    messageEl.classList.add('message_text')
     messageEl.appendChild(document.createTextNode(`${message.fullName} ${message.message}`));
     messageEl.style.textAlign = 'center';
     messageEl.style.marginBottom = '5px';

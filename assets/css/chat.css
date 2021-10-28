@@ -98,11 +98,19 @@ input{
 }
 
 .message_block_self{
-    border-right:3px solid;
+    border-right:5px solid;
+    border-color: #2c4750;
+    text-align: right;
 }
 
 .message_block_another{
-    border-left:3px solid;
+    border-left:5px solid;
+    border-color: #aad99f;
+    text-align: left;
+}
+.message_text{
+    font-size: 22px;
+    color: #FA751D;
 }
 .message_self{
     text-align: right;
@@ -111,8 +119,9 @@ input{
     text-align: left;
 }
 .message_time{
+    color: gray;
     margin-top: 5px;
-    font-size: 16px;
+    font-size: 15px;
 }
 
 .message_color_self {
