@@ -1,6 +1,6 @@
 let name, _event, id, limit = 20, _offset = 0;
 const chatEl = document.getElementById('chat');
-const ws = new WebSocket('ws://127.0.0.1:8000');
+const ws = new WebSocket(window.WEBSOCKET_CONNECTION_URL);
 
 ws.onopen = () => {
     if (!localStorage.getItem('token')) {
@@ -50,12 +50,12 @@ ws.onmessage = (message) => {
 }
 
 window.onbeforeunload = function () {
-    /*status = 'offline';
+    status = 'offline';
     _event = 'disconnect';
     const message = 'отключается от чата';
     ws.send(JSON.stringify({
         id, message, _event
-    }))*/
+    }))
     ws.close();
 };
 

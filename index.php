@@ -23,7 +23,7 @@ try {
             return;
         case 'chat_route':
             try {
-                //$decoded = JWT::decode($_GET['token'], $_ENV['EMAIL_KEY'], array('HS256'));
+                echo "<script>window.WEBSOCKET_CONNECTION_URL = '{$_ENV['WEBSOCKET_CONNECTION_URL']}'</script>";
                 require_once './Templates/chat-template.html';
                 return;
             } catch (Exception $e)
