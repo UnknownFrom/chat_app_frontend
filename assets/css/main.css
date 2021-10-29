@@ -4,7 +4,7 @@
     box-sizing: border-box;
 }
 
-body{
+body {
     background-color: rgba(22, 24, 25, 0.95);
     height: 100vh;
     display: flex;
@@ -14,20 +14,20 @@ body{
     font-size: 20px;
 }
 
-a{
+a {
     color: #6cb7ff;
     font-weight: bold;
     text-decoration: none;
 }
 
-p{
+p {
     align-self: center;
     font-size: 15px;
     margin: 10px 0;
     color: black;
 }
 
-.msg{
+.msg {
     padding: 15px;
     border: 3px solid #FA751D;
     border-radius: 25px;
@@ -35,7 +35,7 @@ p{
     font-weight: bold;
 }
 
-form{
+form {
     background-color: rgb(245, 239, 239);
     display: flex;
     flex-direction: column;
@@ -47,19 +47,18 @@ form{
     box-shadow: 0 0 10px 6px #FA751D;
 }
 
-input:hover{
+input:hover {
     box-shadow: 0 0 15px 3px #97b399;
     border: 2px solid #97b399;
 }
 
-input:focus
-{
+input:focus {
     box-shadow: 0 0 15px 3px #cee09e;
     border: 2px solid #cee09e;
     outline: none;
 }
 
-input{
+input {
     margin: 10px 0;
     padding: 10px;
     border: 2px solid #FA751D;
@@ -67,17 +66,17 @@ input{
     border-radius: 30px;
 }
 
-button:hover{
+button:hover {
     background-color: #97b399;
     box-shadow: 0 0 15px 5px #97b399;
 }
 
-button:active{
+button:active {
     background-color: #cee09e;
     box-shadow: 0 0 15px 5px #cee09e;
 }
 
-button{
+button {
     font-size: 17px;
     margin: 5px;
     inline-size: 200px;
@@ -89,27 +88,27 @@ button{
     border-radius: 20px;
 }
 
-.logout{
+.logout {
     margin: 5px 0;
     font-size: 15px;
     text-align: center;
     color: #FA751D;
 }
 
-.fr{
+.fr {
     width: auto;
     flex-direction: row;
 }
 
-.star{
+.star {
     font-size: 23px;
     color: #be1015;
 }
 
-.none{
+.none {
     display: none;
 }
 
-.error{
+.error {
     border: 2px solid #d50c10;
 }

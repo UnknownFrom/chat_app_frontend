@@ -12,8 +12,7 @@
   "require": {
     "php": ">=7.4",
     "symfony/routing": ">=5.3",
-    "symfony/http-foundation": "^5.3",
-    "sl4mmer/phpcent": "dev-master"
+    "symfony/http-foundation": "^5.3"
   },
   "autoload": {
     "psr-4": {

@@ -3,6 +3,7 @@ const chatEl = document.getElementById('chat');
 const ws = new WebSocket(window.WEBSOCKET_CONNECTION_URL);
 
 ws.onopen = () => {
+    /* проверка токена */
     if (!localStorage.getItem('token')) {
         ws.close();
         document.location.href = 'http://chat.loc/'
@@ -13,9 +14,8 @@ ws.onopen = () => {
 
 ws.onmessage = (message) => {
     const messages = JSON.parse(message.data, reviver);
-    console.log(messages);
-    if(messages.event === 'send_page')
-    {
+    /* вывод страницы сообщений */
+    if (messages.event === 'send_page') {
         sendPage(messages.data);
     }
     for (const message of messages.data) {
@@ -31,6 +31,7 @@ ws.onmessage = (message) => {
                 /* записываем данные текущего пользователя */
                 id = message.id;
                 name = message.fullName;
+                /* оповещаем других о нашем подключении */
                 _event = 'add_user';
                 ws.send(JSON.stringify({
                     id, _event
@@ -49,8 +50,8 @@ ws.onmessage = (message) => {
     }
 }
 
+/* закрытие вкладки */
 window.onbeforeunload = function () {
-    status = 'offline';
     _event = 'disconnect';
     const message = 'отключается от чата';
     ws.send(JSON.stringify({
@@ -68,6 +69,7 @@ logoutEl.addEventListener('submit', logout);
 /* обработка скролла */
 chatEl.addEventListener('scroll', function () {
     if (chatEl.scrollTop === 0) {
+        /* подгрузка новой страницы сообщений */
         _offset++;
         _event = 'send_page';
         ws.send(JSON.stringify({limit, _offset, _event}))
@@ -81,18 +83,21 @@ function sendPage(messages) {
     }
 }
 
+/* добавление сообщения вверх чата */
 function addMessageToBegin(message) {
     const messageBlock = createMessageBlock(message);
     chatEl.insertBefore(messageBlock, chatEl.firstChild);
 }
 
+/* добавление сообщения вниз чата */
 function sendMessage(message) {
     const messageBlock = createMessageBlock(message);
     chatEl.appendChild(messageBlock);
     chatEl.scrollTo(0, chatEl.scrollHeight);
 }
 
-function createMessageBlock(message){
+/* создание блока сообщения */
+function createMessageBlock(message) {
     /* время сообщения */
     const timeEl = document.createElement('div');
     timeEl.appendChild(document.createTextNode(`${message.time}`));
@@ -115,7 +120,8 @@ function createMessageBlock(message){
     return messageBlock;
 }
 
-function send(event){
+/* отправка сообщения на сервер */
+function send(event) {
     event.preventDefault();
     _event = 'send_message';
     const message = document.getElementById('message-text').value;
@@ -128,9 +134,9 @@ function send(event){
     }))
 }
 
+/* полноценный выход пользователя */
 function logout(event) {
     event.preventDefault();
-    status = 'offline';
     _event = 'disconnect';
     const message = 'отключается от чата';
     ws.send(JSON.stringify({
@@ -142,9 +148,9 @@ function logout(event) {
     return true;
 }
 
+/* вывод информационного сообщения */
 function printInfoMessage(message) {
-    if(name === message.fullName)
-    {
+    if (name === message.fullName) {
         return;
     }
     const messageEl = document.createElement('div');
@@ -156,6 +162,7 @@ function printInfoMessage(message) {
     chatEl.scrollTo(0, chatEl.scrollHeight);
 }
 
+/* очистка списка пользователей */
 function removeUsers() {
     const usersListEl = document.getElementById('users')
     while (usersListEl.firstChild) {
@@ -163,6 +170,7 @@ function removeUsers() {
     }
 }
 
+/* вывод списка пользователей */
 function printUsers(data) {
     removeUsers();
     for (const val of data) {

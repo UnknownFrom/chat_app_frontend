@@ -1,10 +1,9 @@
-if(localStorage.getItem('token'))
-{
+/* если пользователь авторизован, перекидываем на чат */
+if (localStorage.getItem('token')) {
     document.location.href = 'chat';
 }
 
 $('button[id="button-enter"]').click(function (e) {
-
     e.preventDefault();
 
     $('input').removeClass('error');
@@ -22,6 +21,7 @@ $('button[id="button-enter"]').click(function (e) {
         },
         success(data) {
             if (data.status) {
+                /* сохранение авторизованного пользователя */
                 window.localStorage.setItem('token', data.token);
                 document.location.href = 'chat';
             } else {
@@ -32,20 +32,11 @@ $('button[id="button-enter"]').click(function (e) {
                 }
                 $('.msg').removeClass('none').text(data.message);
             }
-
         }
     })
 });
 
-/*let avatar = false;
-
-$(`input[name="avatar"]`).change(function (e) {
-    avatar = e.target.files[0];
-});*/
-
-
 $('button[id="button-reg"]').click(function (e) {
-
     e.preventDefault();
 
     $('input').removeClass('error');
@@ -56,14 +47,12 @@ $('button[id="button-reg"]').click(function (e) {
         email = $('input[name="email"]').val(),
         passwordConfirm = $('input[name="passwordConfirm"]').val();
 
-
     let formData = new FormData();
     formData.append('login', login);
     formData.append('password', password);
     formData.append('passwordConfirm', passwordConfirm);
     formData.append('fullName', fullName);
     formData.append('email', email);
-    //formData.append('avatar', avatar);
 
     $.ajax({
         url: 'http://users.api.loc/signup',

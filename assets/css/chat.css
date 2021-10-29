@@ -1,4 +1,4 @@
-body{
+body {
     background-color: rgba(22, 24, 25, 0.95);
     height: 100vh;
     display: flex;
@@ -8,7 +8,7 @@ body{
     font-size: 20px;
 }
 
-.listUsers{
+.listUsers {
     position: relative;
     background-color: rgb(245, 239, 239);
     display: flex;
@@ -19,8 +19,8 @@ body{
     border: 3px solid #FA751D;
     border-radius: 25px;
     box-shadow: 0 0 10px 6px #FA751D;
-    margin:15px;
-    height:70%;
+    margin: 15px;
+    height: 70%;
 }
 
 .chat {
@@ -33,92 +33,96 @@ body{
     border: 3px solid #FA751D;
     border-radius: 25px;
     box-shadow: 0 0 10px 6px #FA751D;
-    margin:15px;
-    height:70%;
+    margin: 15px;
+    height: 70%;
 }
 
 .chat-messages {
-    min-height:93%;
-    max-height:93%;
+    min-height: 93%;
+    max-height: 93%;
     max-width: 100%;
     overflow-y: scroll;
     word-wrap: break-word;
 }
 
 .chat-messages__content {
-    padding:1px;
+    padding: 1px;
 }
 
 .chat-input {
-    min-height:6%;
+    min-height: 6%;
 }
-input:hover{
+
+input:hover {
     box-shadow: 0 0 15px 3px #97b399;
     border: 2px solid #97b399;
 }
 
-input:focus
-{
+input:focus {
     box-shadow: 0 0 15px 3px #cee09e;
     border: 2px solid #cee09e;
     outline: none;
 }
 
-input{
+input {
     padding: 10px;
     border: 2px solid #FA751D;
     color: #FA751D;
     border-radius: 30px;
 }
 
-.chat-form{
+.chat-form {
     display: flex;
     justify-content: space-between;
 }
 
 .chat-form__input {
     margin-bottom: 10%;
-    width:70%;
+    width: 70%;
 }
 
 .chat-form__submit {
-    width:20%;
+    width: 20%;
 }
 
-.logout{
+.logout {
     position: absolute;
     bottom: 3%;
     left: 10%;
     width: 80%;
 }
 
-.message_block{
-    margin-top:5px;
-    padding:2px;
+.message_block {
+    margin-top: 5px;
+    padding: 2px;
 }
 
-.message_block_self{
-    border-right:5px solid;
+.message_block_self {
+    border-right: 5px solid;
     border-color: #2c4750;
     text-align: right;
 }
 
-.message_block_another{
-    border-left:5px solid;
+.message_block_another {
+    border-left: 5px solid;
     border-color: #aad99f;
     text-align: left;
 }
-.message_text{
+
+.message_text {
     font-size: 22px;
     color: #FA751D;
 }
-.message_self{
+
+.message_self {
     text-align: right;
 }
-.message_another{
+
+.message_another {
     text-align: left;
 }
-.message_time{
+
+.message_time {
     color: gray;
     margin-top: 5px;
     font-size: 15px;
