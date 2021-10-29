@@ -17,6 +17,11 @@ ws.onmessage = (message) => {
     /* вывод страницы сообщений */
     if (messages.event === 'send_page') {
         sendPage(messages.data);
+        /* оповещаем других о нашем подключении */
+        _event = 'add_user';
+        ws.send(JSON.stringify({
+            id, _event
+        }))
     }
     for (const message of messages.data) {
         switch (messages.event) {
@@ -24,22 +29,18 @@ ws.onmessage = (message) => {
                 /* вывод активных пользователей и сообщения о входе */
                 printInfoMessage(message)
                 printUsers(message.usersList);
-                _event = 'send_page';
-                ws.send(JSON.stringify({limit, _offset, _event}))
                 break;
             case 'confirm_user':
                 /* записываем данные текущего пользователя */
                 id = message.id;
                 name = message.fullName;
-                /* оповещаем других о нашем подключении */
-                _event = 'add_user';
-                ws.send(JSON.stringify({
-                    id, _event
-                }))
+                _event = 'send_page';
+                ws.send(JSON.stringify({limit, _offset, _event}))
+
                 break;
             case 'disconnect':
                 /* закрытие соединения для дублированных вкладок */
-                ws.send(JSON.stringify({token: localStorage.getItem('token'), _event: 'check_token'}))
+                ws.send(JSON.stringify({token: localStorage.getItem('token'), _event: 'check_multi_window'}))
                 printUsers(message.usersList);
                 printInfoMessage(message);
                 break;
