@@ -53,10 +53,9 @@ ws.onmessage = (message) => {
 
 /* закрытие вкладки */
 window.onbeforeunload = function () {
-    _event = 'disconnect';
-    const message = 'отключается от чата';
+    _event = 'close_window';
     ws.send(JSON.stringify({
-        id, message, _event
+        id, _event
     }))
     ws.close();
 };
