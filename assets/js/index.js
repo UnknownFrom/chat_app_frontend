@@ -36,7 +36,6 @@ ws.onmessage = (message) => {
                 name = message.fullName;
                 _event = 'send_page';
                 ws.send(JSON.stringify({limit, _offset, _event}))
-
                 break;
             case 'disconnect':
                 /* закрытие соединения для дублированных вкладок */

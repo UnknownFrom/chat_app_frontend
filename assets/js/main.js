@@ -10,7 +10,6 @@ $('button[id="button-enter"]').click(function (e) {
 
     let login = $('input[name="login"]').val(),
         password = $('input[name="password"]').val();
-
     $.ajax({
         url: 'http://users.api.loc/signin',
         type: 'POST',
