@@ -29,6 +29,7 @@ ws.onmessage = (message) => {
                 /* вывод активных пользователей и сообщения о входе */
                 printInfoMessage(message)
                 printUsers(message.usersList);
+                chatEl.scrollTo(0, chatEl.scrollHeight);
                 break;
             case 'confirm_user':
                 /* записываем данные текущего пользователя */
@@ -69,9 +70,11 @@ logoutEl.addEventListener('submit', logout);
 chatEl.addEventListener('scroll', function () {
     if (chatEl.scrollTop === 0) {
         /* подгрузка новой страницы сообщений */
+        let fromBottom = chatEl.scrollHeight - chatEl.scrollTop;
         _offset++;
         _event = 'send_page';
         ws.send(JSON.stringify({limit, _offset, _event}))
+        setTimeout(() => {chatEl.scrollTop = chatEl.scrollHeight - fromBottom;}, 10);
     }
 })
 
