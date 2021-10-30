@@ -17,11 +17,6 @@ ws.onmessage = (message) => {
     /* вывод страницы сообщений */
     if (messages.event === 'send_page') {
         sendPage(messages.data);
-        /* оповещаем других о нашем подключении */
-        _event = 'add_user';
-        ws.send(JSON.stringify({
-            id, _event
-        }))
     }
     for (const message of messages.data) {
         switch (messages.event) {
@@ -29,7 +24,6 @@ ws.onmessage = (message) => {
                 /* вывод активных пользователей и сообщения о входе */
                 printInfoMessage(message)
                 printUsers(message.usersList);
-                chatEl.scrollTo(0, chatEl.scrollHeight);
                 break;
             case 'confirm_user':
                 /* записываем данные текущего пользователя */
@@ -37,6 +31,9 @@ ws.onmessage = (message) => {
                 name = message.fullName;
                 _event = 'send_page';
                 ws.send(JSON.stringify({limit, _offset, _event}))
+                setTimeout(() => {
+                    chatEl.scrollTo(0, chatEl.scrollHeight);
+                }, 10)
                 break;
             case 'disconnect':
                 /* закрытие соединения для дублированных вкладок */
@@ -74,7 +71,9 @@ chatEl.addEventListener('scroll', function () {
         _offset++;
         _event = 'send_page';
         ws.send(JSON.stringify({limit, _offset, _event}))
-        setTimeout(() => {chatEl.scrollTop = chatEl.scrollHeight - fromBottom;}, 10);
+        setTimeout(() => {
+            chatEl.scrollTop = chatEl.scrollHeight - fromBottom;
+        }, 10);
     }
 })
 
