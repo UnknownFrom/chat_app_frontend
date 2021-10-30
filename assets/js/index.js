@@ -151,7 +151,7 @@ function logout(event) {
 
 /* вывод информационного сообщения */
 function printInfoMessage(message) {
-    if (name === message.fullName) {
+    if (name === message.fullName || message.message === '') {
         return;
     }
     const messageEl = document.createElement('div');
