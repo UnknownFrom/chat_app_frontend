@@ -9,7 +9,7 @@ ws.onopen = () => {
         document.location.href = 'http://chat.loc/'
         return;
     }
-    ws.send(JSON.stringify({token: localStorage.getItem('token'), limit, _offset, _event: 'check_token'}))
+    ws.send(JSON.stringify({token: localStorage.getItem('token'), _event: 'check_token'}))
 }
 
 ws.onmessage = (message) => {
