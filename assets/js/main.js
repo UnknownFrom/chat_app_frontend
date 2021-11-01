@@ -5,11 +5,11 @@ if (localStorage.getItem('token')) {
 
 $('button[id="button-enter"]').click(function (e) {
     e.preventDefault();
-
     $('input').removeClass('error');
 
     let login = $('input[name="login"]').val(),
         password = $('input[name="password"]').val();
+
     $.ajax({
         url: 'http://users.api.loc/signin',
         type: 'POST',
@@ -37,7 +37,6 @@ $('button[id="button-enter"]').click(function (e) {
 
 $('button[id="button-reg"]').click(function (e) {
     e.preventDefault();
-
     $('input').removeClass('error');
 
     let login = $('input[name="login"]').val(),
