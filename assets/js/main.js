@@ -11,7 +11,7 @@ $('button[id="button-enter"]').click(function (e) {
         password = $('input[name="password"]').val();
 
     $.ajax({
-        url: 'http://users.api.loc/signin',
+        url: window.AUTH_URL,
         type: 'POST',
         dataType: 'json',
         data: {
@@ -53,7 +53,7 @@ $('button[id="button-reg"]').click(function (e) {
     formData.append('email', email);
 
     $.ajax({
-        url: 'http://users.api.loc/signup',
+        url: window.REG_URL,
         type: 'POST',
         dataType: 'json',
         processData: false,

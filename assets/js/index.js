@@ -6,7 +6,7 @@ ws.onopen = () => {
     /* проверка токена */
     if (!localStorage.getItem('token')) {
         ws.close();
-        document.location.href = 'http://chat.loc/'
+        document.location.href = '/'
         return;
     }
     ws.send(JSON.stringify({token: localStorage.getItem('token'), _event: 'check_token'}))
@@ -145,7 +145,7 @@ function logout(event) {
     }))
     ws.close();
     localStorage.removeItem('token');
-    window.location.href = 'http://chat.loc/';
+    window.location.href = '/';
     return true;
 }
 
